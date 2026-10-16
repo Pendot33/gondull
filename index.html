@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio Gondul | Developer</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --bg-color: #0b0615;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(216, 180, 254, 0.22);
+            --primary-purple: #c084fc;
+            --accent-violet: #d8b4fe;
+            --accent-pink: #f472b6;
+            --text-main: #f8fafc;
+            --text-muted: #cbd5e1;
+            --font-head: 'Space Grotesk', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- CANVAS ANIMASI CYBER PARTIKEL BACKGROUND --- */
+        #cyberCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+        }
+
+        /* --- NAVBAR --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 5%;
+            margin: 15px auto 35px;
+            width: 92%;
+            max-width: 1200px;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: var(--font-head);
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #f472b6, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            line-height: 1.2;
+        }
+
+        .nav-right-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- TOMBOL SAKLAR BAHASA (TOGGLE) --- */
+        .lang-toggle-btn {
+            background: rgba(168, 85, 247, 0.15);
+            border: 1px solid rgba(216, 180, 254, 0.35);
+            color: #f3e8ff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: var(--font-code);
+            letter-spacing: 0.5px;
+        }
+
+        .lang-toggle-btn:hover {
+            background: rgba(168, 85, 247, 0.35);
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 10px rgba(244, 114, 182, 0.3);
+        }
+
+        .menu-toggle {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(216, 180, 254, 0.3);
+            color: var(--text-main);
+            font-size: 1rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(168, 85, 247, 0.25);
+            border-color: var(--primary-purple);
+        }
+
+        .nav-links {
+            display: none;
+            position: absolute;
+            top: 70px;
+            right: 5%;
+            background: rgba(11, 6, 21, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(216, 180, 254, 0.4);
+            border-radius: 16px;
+            list-style: none;
+            flex-direction: column;
+            width: 190px;
+            padding: 8px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+        }
+
+        .nav-links.show {
+            display: flex;
+        }
+
+        .nav-links button {
+            font-family: var(--font-head);
+            background: transparent;
+            border: none;
+            color: #a78bfa;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            padding: 10px 14px;
+            border-radius: 10px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .nav-links button:hover, .nav-links button.active {
+            color: #ffffff;
+            background: rgba(192, 132, 252, 0.25);
+        }
+
+        @media (min-width: 768px) {
+            .menu-toggle {
+                display: none;
+            }
+            .nav-links {
+                display: flex !important;
+                position: static;
+                flex-direction: row;
+                background: transparent;
+                border: none;
+                width: auto;
+                padding: 0;
+                box-shadow: none;
+                gap: 10px;
+            }
+            .nav-links button {
+                padding: 6px 12px;
+                text-align: center;
+                border-radius: 10px;
+                font-size: 0.85rem;
+            }
+            .nav-links button:hover, .nav-links button.active {
+                background: rgba(192, 132, 252, 0.18);
+                border: 1px solid rgba(216, 180, 254, 0.35);
+            }
+        }
+
+        /* --- HALAMAN UTAMA --- */
+        .section-page {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            padding: 20px 4% 50px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-page.active-page {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 70px 15px 40px; /* Diturunkan dengan padding atas yang lebih besar */
+        }
+
+        .hero h1 {
+            font-family: var(--font-head);
+            font-size: 2.1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            line-height: 1.3;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff, #d8b4fe, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            margin-bottom: 30px;
+            max-width: 480px;
+            line-height: 1.6;
+        }
+
+        .btn-primary {
+            font-family: var(--font-head);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 32px;
+            background: linear-gradient(135deg, #9333ea, #c084fc);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+            transition: 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(192, 132, 252, 0.6);
+        }
+
+        /* --- SKILLS BADGES --- */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .skill-badge {
+            font-family: var(--font-code);
+            background: rgba(168, 85, 247, 0.18);
+            border: 1px solid rgba(216, 180, 254, 0.35);
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 0.88rem;
+            color: #f3e8ff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            flex: 1 1 45%;
+            justify-content: center;
+        }
+
+        .skill-badge:hover {
+            background: rgba(168, 85, 247, 0.35);
+            border-color: var(--accent-pink);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(244, 114, 182, 0.35);
+        }
+
+        @media (min-width: 600px) {
+            .skill-badge {
+                flex: 1 1 30%;
+            }
+        }
+
+        /* --- MODAL POP-UP UNIVERSAL --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #150b28;
+            border: 1px solid rgba(216, 180, 254, 0.5);
+            border-radius: 20px;
+            padding: 24px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+            text-align: left;
+            animation: modalPop 0.3s ease;
+        }
+
+        @keyframes modalPop {
+            0% { transform: scale(0.85); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-title {
+            font-family: var(--font-head);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-desc {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            line-height: 1.65;
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            font-family: var(--font-head);
+            background: linear-gradient(135deg, #9333ea, #c084fc);
+            color: white;
+            border: none;
+            padding: 8px 22px;
+            border-radius: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            float: right;
+            transition: 0.3s;
+        }
+
+        /* --- TERMINAL --- */
+        .terminal-container {
+            width: 100%;
+            margin-top: 20px;
+            background: rgba(10, 5, 20, 0.92);
+            border: 1px solid rgba(216, 180, 254, 0.35);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            text-align: left;
+        }
+
+        .terminal-header {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        .terminal-title {
+            color: var(--accent-violet);
+            font-size: 0.78rem;
+            font-family: var(--font-code);
+            margin-left: 8px;
+        }
+
+        .terminal-body {
+            padding: 16px;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            color: #f3f4f6;
+            line-height: 1.7;
+            min-height: 180px;
+            white-space: pre-wrap;
+        }
+
+        .kw { color: #f472b6; font-weight: 600; }
+        .fn { color: #c084fc; }
+        .str { color: #34d399; }
+        .cm { color: #64748b; font-style: italic; }
+
+        .cursor {
+            display: inline-block;
+            width: 7px;
+            height: 15px;
+            background-color: var(--accent-pink);
+            vertical-align: middle;
+            animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .page-title {
+            font-family: var(--font-head);
+            font-size: 1.85rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #ffffff, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .content-card {
+            padding: 24px;
+        }
+
+        .content-card p {
+            color: #cbd5e1;
+            line-height: 1.7;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        /* --- PROJEK GRID --- */
+        .project-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .project-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .project-card {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            background: var(--card-bg);
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(192, 132, 252, 0.6);
+            box-shadow: 0 10px 25px rgba(168, 85, 247, 0.3);
+        }
+
+        .project-tag {
+            font-family: var(--font-code);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-pink);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .project-card h3 {
+            font-family: var(--font-head);
+            margin-bottom: 10px;
+            color: #ffffff;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .project-card p {
+            color: #cbd5e1;
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        .contact-form {
+            max-width: 100%;
+            margin: 20px auto 0;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            font-family: var(--font-head);
+            display: block;
+            margin-bottom: 6px;
+            color: var(--accent-violet);
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(216, 180, 254, 0.35);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 12px rgba(244, 114, 182, 0.35);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .platform-select {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .platform-option {
+            flex: 1;
+            position: relative;
+        }
+
+        .platform-option input[type="radio"] {
+            display: none;
+        }
+
+        .platform-label {
+            font-family: var(--font-head);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(216, 180, 254, 0.35);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .platform-option input[type="radio"]:checked + .platform-label {
+            background: rgba(168, 85, 247, 0.25);
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 12px rgba(192, 132, 252, 0.35);
+        }
+
+        .btn-submit {
+            font-family: var(--font-head);
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #9333ea, #c084fc);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 0 18px rgba(168, 85, 247, 0.45);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(192, 132, 252, 0.7);
+        }
+
+        footer {
+            font-family: var(--font-code);
+            text-align: center;
+            padding: 25px;
+            color: #64748b;
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Canvas Animasi Cyber Network Background -->
+    <canvas id="cyberCanvas"></canvas>
+
+    <!-- MODAL POP-UP UNIVERSAL -->
+    <div class="modal-overlay" id="infoModal" onclick="closeModal(event)">
+        <div class="modal-box">
+            <h3 class="modal-title" id="modalTitle">Judul</h3>
+            <p class="modal-desc" id="modalDesc">Deskripsi...</p>
+            <button class="modal-close" onclick="closeModalBtn()" id="btnCloseModal">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Header Navbar -->
+    <nav class="glass-card">
+        <div class="logo" onclick="switchPage('home')">Portofolio Gondul</div>
+        
+        <div class="nav-right-container">
+            <!-- Tombol Saklar Toggle Bahasa (ID -> EN -> 中文) -->
+            <button id="langToggleBtn" class="lang-toggle-btn" onclick="toggleLanguage()">ID</button>
+
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+            </button>
+        </div>
+
+        <ul class="nav-links" id="navMenu">
+            <li><button onclick="switchPage('home')" id="nav-home" class="active">Beranda</button></li>
+            <li><button onclick="switchPage('skills')" id="nav-skills">Keahlian</button></li>
+            <li><button onclick="switchPage('projects')" id="nav-projects">Projek</button></li>
+            <li><button onclick="switchPage('about')" id="nav-about">Tentang</button></li>
+            <li><button onclick="switchPage('contact')" id="nav-contact">Kontak</button></li>
+        </ul>
+    </nav>
+
+    <!-- 1. BERANDA -->
+    <section id="page-home" class="section-page active-page">
+        <div class="hero">
+            <h1 id="t-heroTitle">Inovasi Digital & AI Automation</h1>
+            <p id="t-heroDesc">Membangun sistem cerdas, bot otomatisasi, dan arsitektur web modern berkinerja tinggi.</p>
+            <button class="btn-primary" onclick="switchPage('skills')"><i class="fa-solid fa-play"></i> <span id="t-btnStart">Mulai</span></button>
+        </div>
+    </section>
+
+    <!-- 2. KEAHLIAN -->
+    <section id="page-skills" class="section-page">
+        <h2 class="page-title" id="t-skillsTitle">Keahlian & Teknologi</h2>
+        <div class="glass-card content-card">
+            <p id="t-skillsDesc">Klik pada salah satu teknologi di bawah untuk melihat penjelasan mendalam mengenai peran dan kegunaannya:</p>
+            
+            <div class="skills-container">
+                <div class="skill-badge" onclick="showSkillInfo('javascript')">
+                    <i class="fa-brands fa-js" style="color: #f7df1e; font-size: 1.1rem;"></i> JavaScript
+                </div>
+                <div class="skill-badge" onclick="showSkillInfo('java')">
+                    <i class="fa-brands fa-java" style="color: #f89820; font-size: 1.1rem;"></i> Java
+                </div>
+                <div class="skill-badge" onclick="showSkillInfo('python')">
+                    <i class="fa-brands fa-python" style="color: #3776ab; font-size: 1.1rem;"></i> Python
+                </div>
+                <div class="skill-badge" onclick="showSkillInfo('cpp')">
+                    <i class="fa-solid fa-terminal" style="color: #c084fc; font-size: 1.1rem;"></i> C++ / C
+                </div>
+                <div class="skill-badge" onclick="showSkillInfo('ai')" style="flex: 1 1 100%;">
+                    <i class="fa-solid fa-robot" style="color: #f472b6; font-size: 1.1rem;"></i> AI Agent & Bot Automation
+                </div>
+            </div>
+
+            <div class="terminal-container">
+                <div class="terminal-header">
+                    <span class="dot dot-red"></span>
+                    <span class="dot dot-yellow"></span>
+                    <span class="dot dot-green"></span>
+                    <span class="terminal-title">gondul_skills.js</span>
+                </div>
+                <div class="terminal-body" id="terminal-text"><span class="cursor"></span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. PROJEK -->
+    <section id="page-projects" class="section-page">
+        <h2 class="page-title" id="t-projectsTitle">Portofolio Projek</h2>
+        <div class="project-grid">
+            <div class="project-card" onclick="showProjectInfo('aiAgent')">
+                <div>
+                    <span class="project-tag">AI & Automation</span>
+                    <h3>AI Agent Bot (Telegram & WA)</h3>
+                    <p id="t-proj1">Integrasi Kecerdasan Buatan (AI) ke dalam bot Telegram & WhatsApp untuk layanan pelanggan otomatis dan respons percakapan kontekstual 24/7.</p>
+                </div>
+            </div>
+            <div class="project-card" onclick="showProjectInfo('telegramShop')">
+                <div>
+                    <span class="project-tag">Otomatisasi Bisnis</span>
+                    <h3>Bot Jualan Telegram</h3>
+                    <p id="t-proj2">Bot e-commerce terotomatisasi di Telegram lengkap dengan katalog produk interaktif, manajemen stok, hingga kalkulasi pembayaran instan.</p>
+                </div>
+            </div>
+            <div class="project-card" onclick="showProjectInfo('multiPlatform')">
+                <div>
+                    <span class="project-tag">Pembuatan Aplikasi</span>
+                    <h3>Multi-Platform App</h3>
+                    <p id="t-proj3">Pengembangan aplikasi bisnis interaktif dengan performa optimal untuk desktop & mobile, dilengkapi antarmuka modern dan responsif.</p>
+                </div>
+            </div>
+            <div class="project-card" onclick="showProjectInfo('financialWeb')">
+                <div>
+                    <span class="project-tag">Sistem Keuangan</span>
+                    <h3>Web Financial Dashboard</h3>
+                    <p id="t-proj4">Platform analisis keuangan modern dengan pemantauan arus kas real-time, grafik interaktif, dan pencatatan transaksi terenkripsi.</p>
+                </div>
+            </div>
+            <div class="project-card" onclick="showProjectInfo('businessErp')">
+                <div>
+                    <span class="project-tag">Solusi Bisnis</span>
+                    <h3>Business ERP & Web System</h3>
+                    <p id="t-proj5">Aplikasi web manajemen bisnis terpadu untuk efisiensi inventaris, otomatisasi operasional, serta manajemen relasi pelanggan.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. TENTANG -->
+    <section id="page-about" class="section-page">
+        <h2 class="page-title" id="t-aboutTitle">Tentang Perjalanan Saya</h2>
+        <div class="glass-card content-card">
+            <p id="t-about1">
+                Halo! Nama saya <strong>Gondul</strong>. Saya memulai langkah di dunia pemrograman dan pengembangan perangkat lunak sejak <strong>tahun 2019</strong>. Perjalanan ini dilandasi oleh rasa ingin tahu yang besar tentang bagaimana barisan kode sederhana mampu mengubah ide abstrak menjadi sistem digital yang fungsional dan berdampak nyata.
+            </p>
+            <p id="t-about2">
+                Selama bertahun-tahun bertumbuh di industri teknologi, saya mendedikasikan diri untuk terus belajar, beradaptasi dengan teknologi mutakhir—seperti pengembangan AI Agent dan Bot Otomatisasi—serta menjaga kualitas kode yang bersih, aman, dan scalable.
+            </p>
+            <p style="color: var(--accent-pink); font-weight: 500; font-style: italic;" id="t-about3">
+                "Konsistensi dalam belajar dan keberanian merangkul tantangan baru adalah kunci utama dalam membangun solusi digital yang luar biasa."
+            </p>
+        </div>
+    </section>
+
+    <!-- 5. KONTAK -->
+    <section id="page-contact" class="section-page">
+        <h2 class="page-title" id="t-contactTitle">Hubungi Gondul</h2>
+        <div class="glass-card content-card" style="text-align: center;">
+            <p id="t-contactDesc">Punya gagasan aplikasi, bot jualan, AI agent, atau proyek web menarik? Isi form di bawah untuk langsung terhubung dengan saya:</p>
+            
+            <form class="contact-form" onclick="event.stopPropagation()" onsubmit="sendDirectMessage(event)">
+                <div class="form-group">
+                    <label for="senderName"><i class="fa-solid fa-user"></i> <span id="t-labelName">Nama Anda</span></label>
+                    <input type="text" id="senderName" class="form-control" placeholder="Masukkan nama kamu" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="senderMessage"><i class="fa-solid fa-comment-dots"></i> <span id="t-labelMsg">Pesan / Detail Proyek</span></label>
+                    <textarea id="senderMessage" class="form-control" placeholder="Tuliskan pesan atau ide proyek kamu di sini..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fa-solid fa-paper-plane"></i> <span id="t-labelSendVia">Kirim Pesan Melalui:</span></label>
+                    <div class="platform-select">
+                        <div class="platform-option">
+                            <input type="radio" id="targetWA" name="targetPlatform" value="wa" checked>
+                            <label for="targetWA" class="platform-label">
+                                <i class="fa-brands fa-whatsapp" style="color: #25d366;"></i> WhatsApp
+                            </label>
+                        </div>
+                        <div class="platform-option">
+                            <input type="radio" id="targetTG" name="targetPlatform" value="telegram">
+                            <label for="targetTG" class="platform-label">
+                                <i class="fa-brands fa-telegram" style="color: #24a1de;"></i> Telegram
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit" id="t-btnSubmit">
+                    <i class="fa-solid fa-paper-plane"></i> Kirim Pesan Sekarang
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2019 - 2026 Portofolio Gondul. All rights reserved.</p>
+    </footer>
+
+    <script>
+        /* --- ANIMASI BACKGROUND CYBER CANVAS --- */
+        const canvas = document.getElementById('cyberCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const particles = [];
+        const particleCount = 45;
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2 + 1,
+                vx: (Math.random() - 0.5) * 0.6,
+                vy: (Math.random() - 0.5) * 0.6,
+                color: Math.random() > 0.5 ? 'rgba(192, 132, 252, ' : 'rgba(244, 114, 182, '
+            });
+        }
+
+        function drawCyberBg() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < particleCount; i++) {
+                let p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = p.color + '0.7)';
+                ctx.fill();
+
+                for (let j = i + 1; j < particleCount; j++) {
+                    let p2 = particles[j];
+                    let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = p.color + (1 - dist / 120) * 0.25 + ')';
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(drawCyberBg);
+        }
+        drawCyberBg();
+
+        /* --- DATA KEAHLIAN & MULTI BAHASA --- */
+        const langData = {
+            id: {
+                navHome: "Beranda",
+                navSkills: "Keahlian",
+                navProjects: "Projek",
+                navAbout: "Tentang",
+                navContact: "Kontak",
+                heroTitle: "Inovasi Digital & AI Automation",
+                heroDesc: "Membangun sistem cerdas, bot otomatisasi, dan arsitektur web modern berkinerja tinggi.",
+                btnStart: "Mulai",
+                skillsTitle: "Keahlian & Teknologi",
+                skillsDesc: "Klik pada salah satu teknologi di bawah untuk melihat penjelasan mendalam mengenai peran dan kegunaannya:",
+                projectsTitle: "Portofolio Projek",
+                proj1: "Integrasi Kecerdasan Buatan (AI) ke dalam bot Telegram & WhatsApp untuk layanan pelanggan otomatis dan respons percakapan kontekstual 24/7.",
+                proj2: "Bot e-commerce terotomatisasi di Telegram lengkap dengan katalog produk interaktif, manajemen stok, hingga kalkulasi pembayaran instan.",
+                proj3: "Pengembangan aplikasi bisnis interaktif dengan performa optimal untuk desktop & mobile, dilengkapi antarmuka modern dan responsif.",
+                proj4: "Platform analisis keuangan modern dengan pemantauan arus kas real-time, grafik interaktif, dan pencatatan transaksi terenkripsi.",
+                proj5: "Aplikasi web manajemen bisnis terpadu untuk efisiensi inventaris, otomatisasi operasional, serta manajemen relasi pelanggan.",
+                aboutTitle: "Tentang Perjalanan Saya",
+                about1: "Halo! Nama saya <strong>Gondul</strong>. Saya memulai langkah di dunia pemrograman dan pengembangan perangkat lunak sejak <strong>tahun 2019</strong>. Perjalanan ini dilandasi oleh rasa ingin tahu yang besar tentang bagaimana barisan kode sederhana mampu mengubah ide abstrak menjadi sistem digital yang fungsional dan berdampak nyata.",
+                about2: "Selama bertahun-tahun bertumbuh di industri teknologi, saya mendedikasikan diri untuk terus belajar, beradaptasi dengan teknologi mutakhir—seperti pengembangan AI Agent dan Bot Otomatisasi—serta menjaga kualitas kode yang bersih, aman, dan scalable.",
+                about3: "\"Konsistensi dalam belajar dan keberanian merangkul tantangan baru adalah kunci utama dalam membangun solusi digital yang luar biasa.\"",
+                contactTitle: "Hubungi Gondul",
+                contactDesc: "Punya gagasan aplikasi, bot jualan, AI agent, atau proyek web menarik? Isi form di bawah untuk langsung terhubung dengan saya:",
+                labelName: "Nama Anda",
+                labelMsg: "Pesan / Detail Proyek",
+                labelSendVia: "Kirim Pesan Melalui:",
+                btnSubmit: "Kirim Pesan Sekarang",
+                btnClose: "Tutup",
+                skillInfo: {
+                    javascript: { title: "JavaScript", desc: "Bahasa pemrograman tingkat tinggi yang menjadi inti dari interaktivitas web modern. Digunakan untuk membangun logika sisi klien maupun sisi server menggunakan Node.js." },
+                    java: { title: "Java", desc: "Bahasa pemrograman berorientasi objek yang sangat aman, stabil, dan andal untuk pengembangan aplikasi enterprise berskala masif serta Android." },
+                    python: { title: "Python", desc: "Standar industri untuk pengembangan Artificial Intelligence (AI), Machine Learning, pemrosesan data kompleks, dan otomasi skrip." },
+                    cpp: { title: "C++ / C", desc: "Bahasa pemrograman tingkat rendah yang menawarkan performa super cepat dan kontrol memori langsung untuk game engine dan sistem." },
+                    ai: { title: "AI Agent & Bot Automation", desc: "Keahlian mengintegrasikan LLM dan AI ke Telegram/WhatsApp guna menciptakan agen otonom dan sistem e-commerce 24/7." }
+                },
+                projectInfo: {
+                    aiAgent: { title: "AI Agent Bot (Telegram & WA)", desc: "Sistem agen AI otonom di Telegram dan WhatsApp yang memahami konteks percakapan secara natural dan beroperasi penuh 24 jam." },
+                    telegramShop: { title: "Bot Jualan Telegram", desc: "Solusi otomatisasi e-commerce berbasis Telegram lengkap dengan katalog interaktif dan instruksi pembayaran instan." },
+                    multiPlatform: { title: "Multi-Platform App", desc: "Aplikasi perangkat lunak untuk desktop & mobile dengan arsitektur responsif dan performa tinggi." },
+                    financialWeb: { title: "Web Financial Dashboard", desc: "Platform manajemen dan analisis keuangan digital dengan pemantauan arus kas real-time dan enkripsi tinggi." },
+                    businessErp: { title: "Business ERP & Web System", desc: "Sistem Enterprise Resource Planning berbasis web untuk efisiensi inventaris dan operasional bisnis." }
+                }
+            },
+            en: {
+                navHome: "Home",
+                navSkills: "Skills",
+                navProjects: "Projects",
+                navAbout: "About",
+                navContact: "Contact",
+                heroTitle: "Digital Innovation & AI Automation",
+                heroDesc: "Building intelligent systems, automation bots, and high-performance modern web architectures.",
+                btnStart: "Get Started",
+                skillsTitle: "Skills & Technology",
+                skillsDesc: "Click on any technology below to view detailed descriptions of its role and utility:",
+                projectsTitle: "Project Portfolio",
+                proj1: "Integration of Artificial Intelligence (AI) into Telegram & WhatsApp bots for 24/7 automated customer service and contextual responses.",
+                proj2: "Automated e-commerce bot on Telegram complete with interactive product catalogs, stock management, and instant payment calculations.",
+                proj3: "Interactive business application development optimized for desktop & mobile, featuring a modern and responsive UI.",
+                proj4: "Modern financial analytics platform with real-time cash flow monitoring, interactive charts, and encrypted transaction logs.",
+                proj5: "Integrated business management web app for inventory efficiency, operational automation, and customer relationship management.",
+                aboutTitle: "About My Journey",
+                about1: "Hello! My name is <strong>Gondul</strong>. I started my path in programming and software development in <strong>2019</strong>. This journey was driven by curiosity about how simple lines of code can turn abstract ideas into functional digital systems.",
+                about2: "Over years of growth in the tech industry, I've dedicated myself to continuous learning, adapting to cutting-edge tech like AI Agents and Automation Bots, and maintaining clean, secure, scalable code.",
+                about3: "\"Consistency in learning and the courage to embrace new challenges are key to building extraordinary digital solutions.\"",
+                contactTitle: "Contact Gondul",
+                contactDesc: "Have an app idea, sales bot, AI agent, or exciting web project? Fill out the form below to connect directly with me:",
+                labelName: "Your Name",
+                labelMsg: "Message / Project Details",
+                labelSendVia: "Send Message Via:",
+                btnSubmit: "Send Message Now",
+                btnClose: "Close",
+                skillInfo: {
+                    javascript: { title: "JavaScript", desc: "High-level programming language core to modern web interactivity. Used for client-side and server-side logic with Node.js." },
+                    java: { title: "Java", desc: "Object-oriented programming language, highly secure and stable, reliable for massive enterprise and Android apps." },
+                    python: { title: "Python", desc: "Industry standard for Artificial Intelligence (AI), Machine Learning, complex data processing, and script automation." },
+                    cpp: { title: "C++ / C", desc: "Low-level programming language offering lightning-fast performance and direct memory control for games and systems." },
+                    ai: { title: "AI Agent & Bot Automation", desc: "Expertise in integrating LLMs and AI into Telegram/WhatsApp to build autonomous agents and 24/7 e-commerce systems." }
+                },
+                projectInfo: {
+                    aiAgent: { title: "AI Agent Bot (Telegram & WA)", desc: "Autonomous AI agent system in Telegram and WhatsApp that naturally understands conversational context and operates 24/7." },
+                    telegramShop: { title: "Telegram Sales Bot", desc: "Telegram-based e-commerce automation solution complete with interactive catalogs and instant payment instructions." },
+                    multiPlatform: { title: "Multi-Platform App", desc: "Software application designed for desktop & mobile with responsive architecture and top performance." },
+                    financialWeb: { title: "Web Financial Dashboard", desc: "Digital financial management and analytics platform with real-time cash flow tracking and high encryption." },
+                    businessErp: { title: "Business ERP & Web System", desc: "Web-based Enterprise Resource Planning system for inventory efficiency and operational automation." }
+                }
+            },
+            zh: {
+                navHome: "首页",
+                navSkills: "技能",
+                navProjects: "项目",
+                navAbout: "关于",
+                navContact: "联系",
+                heroTitle: "数字创新与人工智能自动化",
+                heroDesc: "构建智能系统、自动化机器人以及高性能的现代网页架构。",
+                btnStart: "开始",
+                skillsTitle: "技能与技术",
+                skillsDesc: "点击下方任意技术以查看其角色和用途的详细说明：",
+                projectsTitle: "项目作品集",
+                proj1: "将人工智能（AI）集成到 Telegram 和 WhatsApp 机器人中，提供 7x24 小时自动客户服务和上下文对话响应。",
+                proj2: "Telegram 上的自动化电商机器人，配有互动产品目录、库存管理和即时支付计算。",
+                proj3: "针对桌面和移动端优化的交互式业务应用程序开发，具有现代且响应式的用户界面。",
+                proj4: "现代财务分析平台，支持实时现金流监控、交互式图表和加密交易记录。",
+                proj5: "集成的业务管理网页应用，用于提高库存效率、运营自动化和客户关系管理。",
+                aboutTitle: "我的成长历程",
+                about1: "你好！我叫 <strong>Gondul</strong>。我于 <strong>2019年</strong> 开始踏入编程和软件开发领域。这一旅程源于对简单代码如何将抽象创意转化为实用数字系统的好奇心。",
+                about2: "在科技行业成长多年间，我致力于持续学习，适应人工智能代理和自动化机器人等前沿技术，并保持代码的整洁、安全和可扩展性。",
+                about3: "\"持续学习的恒心和拥抱新挑战的勇气是构建卓越数字解决方案的关键。\"",
+                contactTitle: "联系 Gondul",
+                contactDesc: "有应用想法、销售机器人、AI代理或精彩的网页项目？请填写下方表单与我直接联系：",
+                labelName: "您的姓名",
+                labelMsg: "留言 / 项目详情",
+                labelSendVia: "通过以下方式发送：",
+                btnSubmit: "立即发送消息",
+                btnClose: "关闭",
+                skillInfo: {
+                    javascript: { title: "JavaScript", desc: "现代网页交互的核心高级编程语言。用于客户端及使用 Node.js 的服务端逻辑开发。" },
+                    java: { title: "Java", desc: "面向对象的编程语言，高度安全稳定，广泛应用于大型企业级应用和安卓开发。" },
+                    python: { title: "Python", desc: "人工智能（AI）、机器学习、复杂数据处理和脚本自动化的行业标准语言。" },
+                    cpp: { title: "C++ / C", desc: "提供超高性能和直接内存控制的底层编程语言，适用于游戏引擎和系统开发。" },
+                    ai: { title: "AI Agent & Bot Automation", desc: "擅长将大语言模型（LLM）和人工智能集成到 Telegram/WhatsApp，构建自主代理与 7x24 电商系统。" }
+                },
+                projectInfo: {
+                    aiAgent: { title: "AI 代理机器人 (Telegram & WA)", desc: "Telegram 和 WhatsApp 中的自主 AI 代理系统，自然理解对话语境并全天候运行。" },
+                    telegramShop: { title: "Telegram 销售机器人", desc: "基于 Telegram 的电商自动化解决方案，包含互动目录和即时支付说明。" },
+                    multiPlatform: { title: "多平台应用", desc: "为桌面和移动端设计的软件应用程序，具有响应式架构和顶级性能。" },
+                    financialWeb: { title: "网页财务仪表板", desc: "数字财务管理与分析平台，支持实时现金流跟踪和高强度加密。" },
+                    businessErp: { title: "企业 ERP 与网页系统", desc: "基于网页的企业资源规划系统，用于提升库存效率和运营自动化。" }
+                }
+            }
+        };
+
+        let currentLang = 'id';
+        let activeSkillKey = null;
+        let activeProjectKey = null;
+
+        function toggleLanguage() {
+            if (currentLang === 'id') {
+                currentLang = 'en';
+            } else if (currentLang === 'en') {
+                currentLang = 'zh';
+            } else {
+                currentLang = 'id';
+            }
+
+            document.getElementById('langToggleBtn').innerText = currentLang === 'id' ? 'ID' : currentLang === 'en' ? 'EN' : '中文';
+            applyLanguage();
+        }
+
+        function applyLanguage() {
+            const t = langData[currentLang];
+
+            document.getElementById('nav-home').innerText = t.navHome;
+            document.getElementById('nav-skills').innerText = t.navSkills;
+            document.getElementById('nav-projects').innerText = t.navProjects;
+            document.getElementById('nav-about').innerText = t.navAbout;
+            document.getElementById('nav-contact').innerText = t.navContact;
+
+            document.getElementById('t-heroTitle').innerText = t.heroTitle;
+            document.getElementById('t-heroDesc').innerText = t.heroDesc;
+            document.getElementById('t-btnStart').innerText = t.btnStart;
+
+            document.getElementById('t-skillsTitle').innerText = t.skillsTitle;
+            document.getElementById('t-skillsDesc').innerText = t.skillsDesc;
+
+            document.getElementById('t-projectsTitle').innerText = t.projectsTitle;
+            document.getElementById('t-proj1').innerText = t.proj1;
+            document.getElementById('t-proj2').innerText = t.proj2;
+            document.getElementById('t-proj3').innerText = t.proj3;
+            document.getElementById('t-proj4').innerText = t.proj4;
+            document.getElementById('t-proj5').innerText = t.proj5;
+
+            document.getElementById('t-aboutTitle').innerText = t.aboutTitle;
+            document.getElementById('t-about1').innerHTML = t.about1;
+            document.getElementById('t-about2').innerHTML = t.about2;
+            document.getElementById('t-about3').innerText = t.about3;
+
+            document.getElementById('t-contactTitle').innerText = t.contactTitle;
+            document.getElementById('t-contactDesc').innerText = t.contactDesc;
+            document.getElementById('t-labelName').innerText = t.labelName;
+            document.getElementById('t-labelMsg').innerText = t.labelMsg;
+            document.getElementById('t-labelSendVia').innerText = t.labelSendVia;
+            document.getElementById('t-btnSubmit').innerHTML = `<i class="fa-solid fa-paper-plane"></i> ${t.btnSubmit}`;
+            document.getElementById('btnCloseModal').innerText = t.btnClose;
+
+            if (activeSkillKey) showSkillInfo(activeSkillKey);
+            if (activeProjectKey) showProjectInfo(activeProjectKey);
+        }
+
+        /* --- FUNGSI MODAL --- */
+        function showSkillInfo(key) {
+            activeSkillKey = key;
+            activeProjectKey = null;
+            const data = langData[currentLang].skillInfo[key];
+            if (data) {
+                document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-code" style="color: var(--accent-pink);"></i> ${data.title}`;
+                document.getElementById('modalDesc').innerText = data.desc;
+                document.getElementById('infoModal').classList.add('active');
+            }
+        }
+
+        function showProjectInfo(key) {
+            activeProjectKey = key;
+            activeSkillKey = null;
+            const data = langData[currentLang].projectInfo[key];
+            if (data) {
+                document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-laptop-code" style="color: var(--accent-pink);"></i> ${data.title}`;
+                document.getElementById('modalDesc').innerText = data.desc;
+                document.getElementById('infoModal').classList.add('active');
+            }
+        }
+
+        function closeModalBtn() {
+            document.getElementById('infoModal').classList.remove('active');
+            activeSkillKey = null;
+            activeProjectKey = null;
+        }
+
+        function closeModal(e) {
+            if (e.target.id === 'infoModal') {
+                closeModalBtn();
+            }
+        }
+
+        /* --- NAVIGASI --- */
+        function toggleMenu() {
+            const menu = document.getElementById('navMenu');
+            if (menu) menu.classList.toggle('show');
+        }
+
+        window.addEventListener('click', function(e) {
+            const menu = document.getElementById('navMenu');
+            const toggleBtn = document.querySelector('.menu-toggle');
+            if (menu && toggleBtn && !menu.contains(e.target) && !toggleBtn.contains(e.target)) {
+                menu.classList.remove('show');
+            }
+        });
+
+        function switchPage(pageId) {
+            document.querySelectorAll('.section-page').forEach(p => p.classList.remove('active-page'));
+            document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+
+            const target = document.getElementById('page-' + pageId);
+            if (target) target.classList.add('active-page');
+
+            const btn = document.getElementById('nav-' + pageId);
+            if (btn) btn.classList.add('active');
+
+            const navMenu = document.getElementById('navMenu');
+            if (navMenu) navMenu.classList.remove('show');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (pageId === 'skills') {
+                runTerminalAnimation();
+            }
+        }
+
+        /* --- TERMINAL ANIMATION --- */
+        let isTyping = false;
+        function runTerminalAnimation() {
+            if (isTyping) return;
+            isTyping = true;
+
+            const term = document.getElementById('terminal-text');
+            if (!term) return;
+            term.innerHTML = '<span class="cursor"></span>';
+
+            const lines = [
+                '<span class="cm">// Profil Keahlian Gondul (Est. 2019)</span>\n',
+                '<span class="kw">const</span> dev = {\n',
+                '    name: <span class="str">"Gondul"</span>,\n',
+                '    skills: [<span class="str">"JS"</span>, <span class="str">"Java"</span>, <span class="str">"Python"</span>, <span class="str">"C++"</span>],\n',
+                '    specialty: [<span class="str">"AI Agent"</span>, <span class="str">"Telegram Bot"</span>]\n',
+                '};\n\n',
+                'console.<span class="fn">log</span>(<span class="str">"Ready for new projects! 🚀"</span>);'
+            ];
+
+            let lineIdx = 0;
+            let charIdx = 0;
+            let currentHTML = '';
+
+            function typeWriter() {
+                if (lineIdx < lines.length) {
+                    let currentLine = lines[lineIdx];
+                    
+                    if (currentLine.startsWith('<span')) {
+                        let endTagIdx = currentLine.indexOf('>');
+                        let closeTagIdx = currentLine.lastIndexOf('</span>');
+                        let tagOpen = currentLine.substring(0, endTagIdx + 1);
+                        let tagContent = currentLine.substring(endTagIdx + 1, closeTagIdx);
+                        let tagClose = currentLine.substring(closeTagIdx);
+
+                        if (charIdx < tagContent.length) {
+                            if (charIdx === 0) currentHTML += tagOpen;
+                            currentHTML += tagContent[charIdx];
+                            charIdx++;
+                            if (charIdx === tagContent.length) currentHTML += tagClose;
+                            
+                            term.innerHTML = currentHTML + '<span class="cursor"></span>';
+                            setTimeout(typeWriter, 35);
+                        } else {
+                            charIdx = 0;
+                            lineIdx++;
+                            setTimeout(typeWriter, 50);
+                        }
+                    } else {
+                        if (charIdx < currentLine.length) {
+                            currentHTML += currentLine[charIdx];
+                            charIdx++;
+                            term.innerHTML = currentHTML + '<span class="cursor"></span>';
+                            setTimeout(typeWriter, 35);
+                        } else {
+                            charIdx = 0;
+                            lineIdx++;
+                            setTimeout(typeWriter, 50);
+                        }
+                    }
+                } else {
+                    isTyping = false;
+                }
+            }
+
+            setTimeout(typeWriter, 300);
+        }
+
+        /* --- KONTAK --- */
+        function sendDirectMessage(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('senderName');
+            const msgInput = document.getElementById('senderMessage');
+            if (!nameInput || !msgInput) return;
+
+            const name = nameInput.value.trim();
+            const message = msgInput.value.trim();
+            const platform = document.querySelector('input[name="targetPlatform"]:checked').value;
+
+            if (!name || !message) return;
+
+            const text = `Halo Gondul, saya ${name}.\n\n${message}`;
+
+            if (platform === 'wa') {
+                window.open(`https://wa.me/adrenalins?text=${encodeURIComponent(text)}`, '_blank');
+            } else {
+                window.open(`https://t.me/infalgin`, '_blank');
+            }
+        }
+    </script>
+</body>
+</html>
